@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My Grade Book App</title>
+    <meta charset="ISO-8859-1">
+
+    <link rel="stylesheet"
+          th:href="@{/cssandjs/main.css}" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+
+<body>
+
+
+<!-- nav bar -->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top main-color">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Grade Book</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="padding-top:80px"  >
+    <div class="card">
+        <h5 class="card-header">Receiving Student Information For: </h5>
+        <div class="card-body">
+            <h5 class="card-title" ><span th:text="${student.getFullName}">Eric Roby</span></h5>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container mt-4">
+    <div class="row" >
+        <div class="col-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th style="background-color:blue; color:white;">Math Assignments
+                    <span> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-plus-circle-fill float-end pointer" viewBox="0 0 16 16"
+                                th:onclick="|showOrHideGrade('math')|">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                            </svg></span></th>
+                </tr>
+                </thead>
+                <tbody>
+               <tr class="table-success" >
+                   <td><span>Overall:</span> <span th:text="*{mathAverage}" >100</span></td>
+               </tr>
+
+                   <tr th:each="grade : ${student.studentGrades.mathGradeResults}">
+                       <td>
+                           <span th:text="${grade.getGrade}">90</span>
+                           <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill float-end pointer" style="color:d3d3d3" viewBox="0 0 16 16"
+                           th:onclick="|deleteMathGrade('${grade.id}');|">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+    </svg></span>
+                       </td>
+                   </tr>
+
+
+                </tbody>
+            </table>
+
+           <div class="container">
+               <form id="mathGrade" style="display:none" action="/grades" method="post">
+                   <div class="form-group">
+
+                       <label class="mb-2">Grade</label>
+                       <input type="number" class="form-control mb-2" name="grade" placeholder="Enter Grade" step="0.01"
+                              min="0" max="100">
+
+                       <small class="small d-flex text-muted mb-2 " >Enter Student's Grade.</small>
+
+                       <input type="number" class="form-control" name="studentId" th:value="${student.id}" style="display:none">
+
+                       <input type="text" class="form-control" name="gradeType" value="math" style="display:none">
+
+                       <button class="btn btn-primary btn-color">Submit</button>
+
+                   </div>
+               </form>
+
+           </div>
+        </div>
+
+        <div class="col-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th style="background-color:blue; color:white;">Science Assignments
+                        <span> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-plus-circle-fill float-end pointer" viewBox="0 0 16 16"
+                                    th:onclick="|showOrHideGrade('science')|">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                            </svg></span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-success" >
+                    <td><span>Overall:</span> <span th:text="*{scienceAverage}" >100</span></td>
+                </tr>
+
+                <tr th:each="grade : ${student.studentGrades.scienceGradeResults}">
+                    <td>
+                        <span th:text="${grade.getGrade}">90</span>
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill float-end pointer" style="color:d3d3d3" viewBox="0 0 16 16"
+                                   th:onclick="|deleteScienceGrade('${grade.id}');|">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+    </svg></span>
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+            <div class="container">
+                <form id="scienceGrade" style="display:none" action="/grades" method="post">
+                    <div class="form-group">
+
+                        <label>Grade</label>
+                        <input type="number" class="form-control mt-2" name="grade" placeholder="Enter Grade" step="0.01"
+                               min="0" max="100">
+
+                        <small class="small text-muted mt-2 mb-2 d-flex" >Enter Student's Grade.</small>
+
+                        <input type="number" class="form-control" name="studentId" th:value="${student.id}" style="display:none" >
+
+                        <input type="text" class="form-control" name="gradeType" value="science" style="display:none">
+
+                        <button class="btn btn-primary btn-color">Submit</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th style="background-color:blue; color:white;">History Assignments
+                        <span> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-plus-circle-fill float-end pointer" viewBox="0 0 16 16"
+                                    th:onclick="|showOrHideGrade('history')|">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                            </svg></span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-success" >
+                    <td><span>Overall:</span> <span th:text="*{historyAverage}" >100</span></td>
+                </tr>
+
+                <tr th:each="grade : ${student.studentGrades.historyGradeResults}">
+                    <td>
+                        <span th:text="${grade.grade}">90</span>
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill float-end pointer" style="color:d3d3d3" viewBox="0 0 16 16"
+                                   th:onclick="|deleteHistoryGrade('${grade.id}');|">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+    </svg></span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <div class="container">
+                <form id="historyGrade" style="display:none" action="/grades" method="post">
+                    <div class="form-group">
+
+                        <label>Grade</label>
+                        <input type="number" class="form-control mt-2 mb-2" name="grade" placeholder="Enter Grade" step="0.01"
+                               min="0" max="100">
+
+                        <small class="small text-muted mb-2 d-flex" >Enter Student's Grade.</small>
+
+                        <input type="number" class="form-control" name="studentId" th:value="${student.id}" style="display:none" >
+
+                        <input type="text" class="form-control" name="gradeType" value="history" style="display:none">
+
+                        <button class="btn btn-primary btn-color">Submit</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript" th:src="@{/cssandjs/js/main.js}"></script>
+
+</body>
+</html>
